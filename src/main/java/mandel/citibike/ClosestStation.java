@@ -9,10 +9,10 @@ public class ClosestStation {
         this.stations = stations;
     }
 
-    public int getStatus (String stationID, boolean bikes) {
+    public int getStatus(String stationId, boolean bikes) {
         int available = 0;
         for (Station station : stations.data.stations) {
-            if (station.station_id.equals(stationID)) {
+            if (station.station_id.equals(stationId)) {
                 available = bikes ? station.num_bikes_available : station.num_docks_available;
                 break;
             }
@@ -36,12 +36,12 @@ public class ClosestStation {
         return closestStation;
     }
 
-    public int getNumBikesAvailable(String stationID) {
-        return getStatus(stationID, true);
+    public int getNumBikesAvailable(String stationId) {
+        return getStatus(stationId, true);
     }
 
-    public int getNumDocksAvailable(String stationID) {
-        return getStatus(stationID, false);
+    public int getNumDocksAvailable(String stationId) {
+        return getStatus(stationId, false);
     }
 
     public Station findClosestStationWithBikes(double lat, double lon) {
