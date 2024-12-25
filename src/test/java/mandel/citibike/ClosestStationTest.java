@@ -14,10 +14,11 @@ class ClosestStationTest {
     void getNumBikesAvailable() {
         // given
         CitiBikeService service = new CitiBikeServiceFactory().getService();
-        Stations collection = service.getStationStatus().blockingGet();
+        Stations collectionInfo = service.getStationInformation().blockingGet();
+        Stations collectionStatus = service.getStationStatus().blockingGet();
 
         // when
-        ClosestStation closestStation = new ClosestStation(collection);
+        ClosestStation closestStation = new ClosestStation(collectionInfo, collectionStatus);
         int numBikes = closestStation.getNumBikesAvailable("77e31650-e86a-4b06-b2de-b92df2a7a7f5");
 
         // then
@@ -28,10 +29,11 @@ class ClosestStationTest {
     void getNumDocksAvailable() {
         // given
         CitiBikeService service = new CitiBikeServiceFactory().getService();
-        Stations collection = service.getStationStatus().blockingGet();
+        Stations collectionInfo = service.getStationInformation().blockingGet();
+        Stations collectionStatus = service.getStationStatus().blockingGet();
 
         // when
-        ClosestStation closestStation = new ClosestStation(collection);
+        ClosestStation closestStation = new ClosestStation(collectionInfo, collectionStatus);
         int numSlots = closestStation.getNumDocksAvailable("77e31650-e86a-4b06-b2de-b92df2a7a7f5");
 
         // then
@@ -45,22 +47,20 @@ class ClosestStationTest {
 
         //given
         CitiBikeService service = new CitiBikeServiceFactory().getService();
-        double lat = 40.652513;
-        double lon = -74.008905;
+        double lon = -73.886751;
+        double lat = 40.74719;
 
-        Disposable disposable = service.getStationInformation()
-                .subscribeOn(Schedulers.io())
-                .observeOn(SwingSchedulers.edt())
-                .subscribe(
-                        collection -> {
-                            // when
-                            ClosestStation closestStation = new ClosestStation(collection);
-                            Station closest = closestStation.findClosestStationWithBikes(lat, lon);
+        Stations collectionInfo = service.getStationInformation().blockingGet();
+        Stations collectionStatus = service.getStationStatus().blockingGet();
 
-                            // then
-                            assertEquals("41 St & 3 Ave", closest.name);
-                        },
-                        Throwable::printStackTrace);
+        // when
+        ClosestStation closestStation = new ClosestStation(collectionInfo, collectionStatus);
+        Station closest = closestStation.findClosestStationWithBikes(lat, lon);
+
+
+        // then
+        assertNotNull(closest);
+        assertEquals("79 St & Roosevelt Ave", closest.name);
     }
 
     @Test
@@ -68,21 +68,18 @@ class ClosestStationTest {
 
         //given
         CitiBikeService service = new CitiBikeServiceFactory().getService();
-        double lat = 40.652513;
-        double lon = -74.008905;
+        double lon = -73.886751;
+        double lat = 40.74719;
 
-        Disposable disposable = service.getStationInformation()
-                .subscribeOn(Schedulers.io())
-                .observeOn(SwingSchedulers.edt())
-                .subscribe(
-                        collection -> {
-                            // when
-                            ClosestStation closestStation = new ClosestStation(collection);
-                            Station closest = closestStation.findClosestStationWithSlots(lat, lon);
+        Stations collectionInfo = service.getStationInformation().blockingGet();
+        Stations collectionStatus = service.getStationStatus().blockingGet();
 
-                            // then
-                            assertEquals("41 St & 3 Ave", closest.name);
-                        },
-                        Throwable::printStackTrace);
+        // when
+        ClosestStation closestStation = new ClosestStation(collectionInfo, collectionStatus);
+        Station closest = closestStation.findClosestStationWithSlots(lat, lon);
+
+        // then
+        assertNotNull(closest);
+        assertEquals("79 St & Roosevelt Ave", closest.name);
     }
 }
