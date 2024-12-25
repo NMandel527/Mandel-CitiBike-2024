@@ -27,8 +27,8 @@ public class ClosestStation {
         double minDistance = Double.POSITIVE_INFINITY;
 
         for (Station station : stationInfo.data.stations) {
-            double distance = Math.sqrt(((lat - station.lat) * (lat - station.lat)) +
-                    ((lon - station.lon) * (lon - station.lon)));
+            double distance = Math.sqrt(((lat - station.lat) * (lat - station.lat))
+                    + ((lon - station.lon) * (lon - station.lon)));
             int bikesOrSlots = numBikesOrSlots(station, withBikes);
             if (distance < minDistance && bikesOrSlots > 0) {
                 minDistance = distance;
