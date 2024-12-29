@@ -1,13 +1,14 @@
 package mandel.citibike.lambda;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.*;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.google.gson.Gson;
 
 import mandel.citibike.*;
 import mandel.citibike.json.*;
-public class CitiBikeRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, CitiBikeRequestHandler.CitiBikeResponse> {
+
+public class CitiBikeRequestHandler implements RequestHandler
+        <APIGatewayProxyRequestEvent, CitiBikeRequestHandler.CitiBikeResponse> {
 
     @Override
     public CitiBikeResponse handleRequest(APIGatewayProxyRequestEvent event, Context context) {
