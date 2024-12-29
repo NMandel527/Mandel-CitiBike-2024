@@ -4,7 +4,11 @@ import mandel.citibike.json.*;
 
 public class ClosestStation {
     private final Stations stationInfo;
-    private final Stations stationStatus;
+    private Stations stationStatus;
+
+    public ClosestStation (Stations stationInfo) {
+        this.stationInfo = stationInfo;
+    }
 
     public ClosestStation(Stations stationInfo, Stations stationStatus) {
         this.stationInfo = stationInfo;
