@@ -8,7 +8,7 @@ import mandel.citibike.*;
 import mandel.citibike.json.*;
 
 public class CitiBikeRequestHandler implements RequestHandler
-        <APIGatewayProxyRequestEvent, CitiBikeRequestHandler.CitiBikeResponse> {
+        <APIGatewayProxyRequestEvent, CitiBikeResponse> {
 
     @Override
     public CitiBikeResponse handleRequest(APIGatewayProxyRequestEvent event, Context context) {
@@ -25,27 +25,9 @@ public class CitiBikeRequestHandler implements RequestHandler
         Station closestFrom = closestStation.findClosestStationWithBikes(request.from.lat, request.from.lon);
         Station closestTo = closestStation.findClosestStationWithSlots(request.to.lat, request.to.lon);
 
-        StationLocation start = new StationLocation();
-        StationLocation end = new StationLocation();
-        populateStationLocation(start, closestFrom);
-        populateStationLocation(end, closestTo);
+        StationLocation start = new StationLocation(closestFrom);
+        StationLocation end = new StationLocation(closestTo);
 
         return new CitiBikeResponse(request.from, start, end, request.to);
-    }
-
-    private void populateStationLocation(StationLocation startOrEnd, Station closest) {
-        startOrEnd.lat = closest.lat;
-        startOrEnd.lon = closest.lon;
-        startOrEnd.stationName = closest.name;
-        startOrEnd.stationId = closest.station_id;
-    }
-
-    record CitiBikeRequest(Location from, Location to
-    ) {
-
-    }
-
-    record CitiBikeResponse(Location from, StationLocation start, StationLocation end, Location to
-    ) {
     }
 }

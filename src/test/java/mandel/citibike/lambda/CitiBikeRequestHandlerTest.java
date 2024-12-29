@@ -26,7 +26,7 @@ class CitiBikeRequestHandlerTest {
         CitiBikeResponse citibikeResponse = handler.handleRequest(event, context);
 
         //then
-        assertEquals("Lenox Ave & W 146 St", citibikeResponse.start().stationName);
-        assertEquals("Berry St & N 8 St", citibikeResponse.end().stationName);
+        assertEquals("Lenox Ave & W 146 St", citibikeResponse.start.stationName);
+        assertEquals("79 St & Roosevelt Ave", citibikeResponse.end.stationName);
     }
 }
