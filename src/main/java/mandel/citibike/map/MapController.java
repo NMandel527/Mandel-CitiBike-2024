@@ -21,7 +21,8 @@ public class MapController {
     private GeoPosition start;
     private GeoPosition end;
 
-    public MapController(MapFrame mapFrame, JXMapViewer mapViewer, RoutePainter routePainter, WaypointPainter waypointPainter) {
+    public MapController(MapFrame mapFrame, JXMapViewer mapViewer,
+                         RoutePainter routePainter, WaypointPainter waypointPainter) {
         this.mapFrame = mapFrame;
         this.mapViewer = mapViewer;
         this.routePainter = routePainter;
