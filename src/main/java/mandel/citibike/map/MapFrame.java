@@ -25,7 +25,10 @@ public class MapFrame extends JFrame {
         WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
         JXMapViewer mapViewer = new JXMapViewer();
 
-        controller = new MapController(this, mapViewer, routePainter, waypointPainter);
+        MapComponent component = new MapComponent(mapViewer);
+        add(component);
+
+        controller = new MapController(this, mapViewer, routePainter, waypointPainter, component);
 
         mapViewer.addMouseListener(new MouseAdapter() {
             @Override
@@ -72,9 +75,7 @@ public class MapFrame extends JFrame {
         add(panel, BorderLayout.SOUTH);
         add(mapViewer, BorderLayout.CENTER);
 
-        List<Painter<JXMapViewer>> painters = List.of(routePainter, waypointPainter);
-        CompoundPainter<JXMapViewer> compoundPainter = new CompoundPainter<>(painters);
-        mapViewer.setOverlayPainter(compoundPainter);
+        controller.drawRoutes();
     }
 
     public void setFromText(String text) {

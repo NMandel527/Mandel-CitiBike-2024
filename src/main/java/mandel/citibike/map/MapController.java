@@ -16,19 +16,19 @@ public class MapController {
     private final JXMapViewer mapViewer;
     private final RoutePainter routePainter;
     private final WaypointPainter<Waypoint> waypointPainter;
+    private final MapComponent view;
     private GeoPosition fromPosition = null;
     private GeoPosition toPosition = null;
     private GeoPosition start;
     private GeoPosition end;
 
-    public MapController(MapFrame mapFrame, JXMapViewer mapViewer,
-                         RoutePainter routePainter, WaypointPainter waypointPainter) {
+    public MapController(MapFrame mapFrame, JXMapViewer mapViewer, RoutePainter routePainter,
+                         WaypointPainter waypointPainter, MapComponent view) {
         this.mapFrame = mapFrame;
         this.mapViewer = mapViewer;
         this.routePainter = routePainter;
         this.waypointPainter = waypointPainter;
-        MapComponent view = new MapComponent(mapViewer);
-        view.repaint();
+        this.view = view;
     }
 
     public void findStations() {
@@ -101,5 +101,9 @@ public class MapController {
         GeoPosition nyc = new GeoPosition(40.7478, -73.9852);
         mapViewer.setZoom(4);
         mapViewer.setAddressLocation(nyc);
+    }
+
+    public void drawRoutes() {
+        view.drawRoutes(routePainter, waypointPainter);
     }
 }
