@@ -4,16 +4,16 @@ import hu.akarnokd.rxjava3.swing.SwingSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import mandel.citibike.lambda.*;
-import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.*;
 
+import javax.swing.*;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
 
 public class MapController {
-    private final MapFrame mapFrame;
-    private final JXMapViewer mapViewer;
+    private final JLabel from;
+    private final JLabel to;
     private final RoutePainter routePainter;
     private final WaypointPainter<Waypoint> waypointPainter;
     private final MapComponent view;
@@ -22,10 +22,10 @@ public class MapController {
     private GeoPosition start;
     private GeoPosition end;
 
-    public MapController(MapFrame mapFrame, JXMapViewer mapViewer, RoutePainter routePainter,
+    public MapController(JLabel from, JLabel to, RoutePainter routePainter,
                          WaypointPainter waypointPainter, MapComponent view) {
-        this.mapFrame = mapFrame;
-        this.mapViewer = mapViewer;
+        this.from = from;
+        this.to = to;
         this.routePainter = routePainter;
         this.waypointPainter = waypointPainter;
         this.view = view;
@@ -67,7 +67,7 @@ public class MapController {
                 new DefaultWaypoint(toPosition)
         ));
 
-        mapViewer.zoomToBestFit(
+        view.getMapViewer().zoomToBestFit(
                 Set.of(fromPosition, start, end, toPosition),
                 1.0
         );
@@ -75,14 +75,14 @@ public class MapController {
 
     public void setPosition(int x, int y) {
         Point2D.Double point = new Point2D.Double(x, y);
-        GeoPosition clickedPosition = mapViewer.convertPointToGeoPosition(point);
+        GeoPosition clickedPosition = view.getMapViewer().convertPointToGeoPosition(point);
 
         if (fromPosition == null) {
             fromPosition = clickedPosition;
-            mapFrame.setFromText(fromPosition.getLatitude() + ", " + fromPosition.getLongitude());
+            from.setText(fromPosition.getLatitude() + ", " + fromPosition.getLongitude());
         } else if (toPosition == null) {
             toPosition = clickedPosition;
-            mapFrame.setToText(toPosition.getLatitude() + ", " + toPosition.getLongitude());
+            to.setText(toPosition.getLatitude() + ", " + toPosition.getLongitude());
         }
     }
 
@@ -90,8 +90,8 @@ public class MapController {
         routePainter.setTrack(new ArrayList<>());
         waypointPainter.setWaypoints(Set.of());
 
-        mapFrame.setFromText("From: Click on the map");
-        mapFrame.setToText("To: Click on the map");
+        from.setText("From: Click on the map");
+        to.setText("To: Click on the map");
 
         fromPosition = null;
         toPosition = null;
@@ -99,8 +99,8 @@ public class MapController {
         end = null;
 
         GeoPosition nyc = new GeoPosition(40.7478, -73.9852);
-        mapViewer.setZoom(4);
-        mapViewer.setAddressLocation(nyc);
+        view.getMapViewer().setZoom(4);
+        view.getMapViewer().setAddressLocation(nyc);
     }
 
     public void drawRoutes() {

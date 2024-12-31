@@ -8,13 +8,14 @@ import org.jxmapviewer.viewer.*;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
+import java.awt.*;
 import java.util.List;
 
 public class MapComponent extends JComponent {
     private final JXMapViewer mapViewer;
 
-    public MapComponent(JXMapViewer mapViewer) {
-        this.mapViewer = mapViewer;
+    public MapComponent() {
+        mapViewer = new JXMapViewer();
         TileFactoryInfo info = new OSMTileFactoryInfo();
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         mapViewer.setTileFactory(tileFactory);
@@ -30,13 +31,18 @@ public class MapComponent extends JComponent {
         mapViewer.addMouseListener(new CenterMapListener(mapViewer));
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
         mapViewer.addKeyListener(new PanKeyListener(mapViewer));
-        repaint();
+
+        setLayout(new BorderLayout());
+        add(mapViewer, BorderLayout.CENTER);
     }
 
     public void drawRoutes(RoutePainter routePainter, WaypointPainter<Waypoint> waypointPainter) {
         List<Painter<JXMapViewer>> painters = List.of(routePainter, waypointPainter);
         CompoundPainter<JXMapViewer> compoundPainter = new CompoundPainter<>(painters);
         mapViewer.setOverlayPainter(compoundPainter);
-        repaint();
+    }
+
+    public JXMapViewer getMapViewer() {
+        return mapViewer;
     }
 }

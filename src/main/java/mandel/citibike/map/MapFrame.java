@@ -4,17 +4,10 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
-import org.jxmapviewer.*;
-import org.jxmapviewer.painter.CompoundPainter;
-import org.jxmapviewer.painter.Painter;
 import org.jxmapviewer.viewer.*;
-
-import java.util.List;
 
 public class MapFrame extends JFrame {
     private final MapController controller;
-    private final JTextField from;
-    private final JTextField to;
 
     public MapFrame() {
         setTitle("CitiBike Map");
@@ -23,33 +16,27 @@ public class MapFrame extends JFrame {
 
         RoutePainter routePainter = new RoutePainter();
         WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
-        JXMapViewer mapViewer = new JXMapViewer();
 
-        MapComponent component = new MapComponent(mapViewer);
-        add(component);
+        MapComponent component = new MapComponent();
 
-        controller = new MapController(this, mapViewer, routePainter, waypointPainter, component);
+        JLabel from = new JLabel();
+        from.setText("From: Click on the map");
 
-        mapViewer.addMouseListener(new MouseAdapter() {
+        JLabel to = new JLabel();
+        to.setText("To: Click on the map");
+
+        controller = new MapController(from, to, routePainter, waypointPainter, component);
+
+        component.getMapViewer().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-
                 controller.setPosition(x, y);
             }
         });
 
-        from = new JTextField();
-        from.setEditable(false);
-        setFromText("From: Click on the map");
-
-        to = new JTextField();
-        to.setEditable(false);
-        setToText("To: Click on the map");
-
         JButton map = new JButton("Map");
-
         map.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,16 +60,8 @@ public class MapFrame extends JFrame {
         panel.add(clear);
 
         add(panel, BorderLayout.SOUTH);
-        add(mapViewer, BorderLayout.CENTER);
+        add(component, BorderLayout.CENTER);
 
         controller.drawRoutes();
-    }
-
-    public void setFromText(String text) {
-        from.setText(text);
-    }
-
-    public void setToText(String text) {
-        to.setText(text);
     }
 }
