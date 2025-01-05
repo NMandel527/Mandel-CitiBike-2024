@@ -32,9 +32,9 @@ public class StationsCache {
         boolean lessThanOneHour = s3LastModified();
         if (stations != null && lastModified != null && lessThanOneHour) {
             return stations;
-        } else if (stations == null && (!lessThanOneHour || lastModified == null)) {
+        } else if ((!lessThanOneHour || lastModified == null)) {
             downloadAndWrite();
-        } else if (stations == null) {
+        } else {
             readFromS3();
         }
         return stations;
