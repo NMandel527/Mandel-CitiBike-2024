@@ -19,6 +19,7 @@ public class StationsCache {
     private final CitiBikeService citiBikeService;
     private Stations stations;
     private Instant lastModified;
+    private final Gson gson = new Gson();
 
     public StationsCache() {
         this.s3Client = S3Client.builder()
@@ -51,7 +52,7 @@ public class StationsCache {
             lastModified = headObjectResponse.lastModified();
             return Duration.between(lastModified, Instant.now()).toHours() <= 1;
         } catch (Exception e) {
-            return true;
+            return false;
         }
     }
 
@@ -62,7 +63,6 @@ public class StationsCache {
                 .build();
 
         InputStream in = s3Client.getObject(getObjectRequest);
-        Gson gson = new Gson();
         stations = gson.fromJson(new InputStreamReader(in), Stations.class);
     }
 
@@ -74,7 +74,6 @@ public class StationsCache {
                 .key(KEY)
                 .build();
 
-        Gson gson = new Gson();
         s3Client.putObject(putObjectRequest, RequestBody.fromString(gson.toJson(stations)));
         lastModified = Instant.now();
     }

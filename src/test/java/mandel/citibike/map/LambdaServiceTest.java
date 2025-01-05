@@ -24,7 +24,6 @@ class LambdaServiceTest {
             assertEquals("Lenox Ave & W 146 St", citiBikeResponse.start.stationName);
             assertEquals("79 St & Roosevelt Ave", citiBikeResponse.end.stationName);
         } catch (Exception e) {
-            assertNotNull(e);
             e.printStackTrace();
         }
     }
