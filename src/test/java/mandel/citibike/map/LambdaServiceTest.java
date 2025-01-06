@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class LambdaServiceTest {
     @Test
     void getClosestStations() {
+
         // given
         LambdaService service = new LambdaServiceFactory().getService();
 
@@ -17,14 +18,12 @@ class LambdaServiceTest {
         // when
         CitiBikeRequest request = new CitiBikeRequest(from, to);
 
-        try {
-            CitiBikeResponse citiBikeResponse = service.getClosestStations(request).blockingGet();
 
-            // then
-            assertEquals("Lenox Ave & W 146 St", citiBikeResponse.start.stationName);
-            assertEquals("79 St & Roosevelt Ave", citiBikeResponse.end.stationName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        CitiBikeResponse citiBikeResponse = service.getClosestStations(request).blockingGet();
+
+        // then
+        assertEquals("Lenox Ave & W 146 St", citiBikeResponse.start.stationName);
+        assertEquals("79 St & Roosevelt Ave", citiBikeResponse.end.stationName);
+
     }
- }
+}

@@ -9,6 +9,7 @@ class ClosestStationTest {
 
     @Test
     void getNumBikesAvailable() {
+
         // given
         CitiBikeService service = new CitiBikeServiceFactory().getService();
         Stations collectionInfo = service.getStationInformation().blockingGet();

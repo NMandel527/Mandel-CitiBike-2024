@@ -67,14 +67,18 @@ public class StationsCache {
     }
 
     private void downloadAndWrite() {
-        stations = citiBikeService.getStationInformation().blockingGet();
+        try {
+            stations = citiBikeService.getStationInformation().blockingGet();
 
-        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                .bucket(BUCKET)
-                .key(KEY)
-                .build();
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(BUCKET)
+                    .key(KEY)
+                    .build();
 
-        s3Client.putObject(putObjectRequest, RequestBody.fromString(gson.toJson(stations)));
-        lastModified = Instant.now();
+            s3Client.putObject(putObjectRequest, RequestBody.fromString(gson.toJson(stations)));
+            lastModified = Instant.now();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
