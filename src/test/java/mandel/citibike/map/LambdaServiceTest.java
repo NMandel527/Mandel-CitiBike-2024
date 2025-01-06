@@ -18,7 +18,6 @@ class LambdaServiceTest {
         // when
         CitiBikeRequest request = new CitiBikeRequest(from, to);
 
-
         CitiBikeResponse citiBikeResponse = service.getClosestStations(request).blockingGet();
 
         // then
