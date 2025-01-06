@@ -31,9 +31,11 @@ public class StationsCache {
 
     public Stations getStations() {
         boolean lessThanOneHour = s3LastModified();
-        if (stations != null && lastModified != null && lessThanOneHour) {
+        if (stations != null && lastModified != null && Duration.between(lastModified, Instant.now()).toHours() <= 1) {
             return stations;
-        } else if ((!lessThanOneHour || lastModified == null)) {
+        } else if ((stations != null && lastModified != null &&
+                Duration.between(lastModified, Instant.now()).toHours() >= 1)
+                || (stations == null && !lessThanOneHour)) {
             downloadAndWrite();
         } else {
             readFromS3();
