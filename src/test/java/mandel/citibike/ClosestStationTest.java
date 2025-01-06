@@ -1,8 +1,5 @@
 package mandel.citibike;
 
-import hu.akarnokd.rxjava3.swing.SwingSchedulers;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import mandel.citibike.json.*;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +9,7 @@ class ClosestStationTest {
 
     @Test
     void getNumBikesAvailable() {
+
         // given
         CitiBikeService service = new CitiBikeServiceFactory().getService();
         Stations collectionInfo = service.getStationInformation().blockingGet();
@@ -40,8 +38,6 @@ class ClosestStationTest {
         assertNotNull(numSlots);
     }
 
-
-
     @Test
     void findClosestStationWithBikes() {
 
@@ -56,7 +52,6 @@ class ClosestStationTest {
         // when
         ClosestStation closestStation = new ClosestStation(collectionInfo, collectionStatus);
         Station closest = closestStation.findClosestStationWithBikes(lat, lon);
-
 
         // then
         assertNotNull(closest);

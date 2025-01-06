@@ -2,13 +2,13 @@ package mandel.citibike.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import mandel.citibike.lambda.CitiBikeRequestHandler.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class CitiBikeRequestHandlerTest {
@@ -22,9 +22,10 @@ class CitiBikeRequestHandlerTest {
         Context context = mock(Context.class);
         when(event.getBody()).thenReturn(json);
 
+        // when
         CitiBikeRequestHandler handler = new CitiBikeRequestHandler();
 
-        // when
+
         CitiBikeResponse citiBikeResponse = handler.handleRequest(event, context);
 
         // then

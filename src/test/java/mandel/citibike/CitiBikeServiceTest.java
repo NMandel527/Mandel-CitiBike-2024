@@ -32,7 +32,7 @@ class CitiBikeServiceTest {
 
         //when
         Stations collection = service.getStationStatus().blockingGet();
-        Station station = collection.data.stations[3];
+        Station station = collection.data.stations[8];
 
         //then
         assertNotEquals(0, station.num_bikes_available);

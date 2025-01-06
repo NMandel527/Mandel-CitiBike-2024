@@ -17,7 +17,9 @@ public class CitiBikeRequestHandler implements RequestHandler
         CitiBikeRequest request = gson.fromJson(body, CitiBikeRequest.class);
 
         CitiBikeService service = new CitiBikeServiceFactory().getService();
-        Stations collectionInfo = service.getStationInformation().blockingGet();
+        StationsCache stations = new StationsCache();
+
+        Stations collectionInfo = stations.getStations();
         Stations collectionStatus = service.getStationStatus().blockingGet();
 
         ClosestStation closestStation = new ClosestStation(collectionInfo, collectionStatus);
